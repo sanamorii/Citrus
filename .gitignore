@@ -1,5 +1,5 @@
 .vscode/
-references/
-citrus-engine.code-workspace
+reference/
+citrus_engine.code-workspace
 bin/releases/*
 bin/debug/*
