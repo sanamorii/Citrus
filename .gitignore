@@ -1,3 +1,5 @@
 .vscode/
 references/
 citrus-engine.code-workspace
+bin/releases/*
+bin/debug/*
