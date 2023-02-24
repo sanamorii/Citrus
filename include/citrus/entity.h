@@ -13,17 +13,9 @@ typedef struct Entity{
     int x, y;
     int type;
 
-    SDL_Texture *image;
+    void *sprite;
 
 }Entity;
 
-typedef struct Animation{
-    long int parent_id;
-    long int id;
-
-    SDL_Texture **frames;
-    int frame_count;
-    double time;
-}Animation;
 
 #endif

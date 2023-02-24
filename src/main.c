@@ -25,9 +25,6 @@ int main(int argc, char **argv)
     SDL_Surface *surface = NULL;
     SDL_Renderer *renderer;
 
-    int NOW = 0, LAST = 0;
-    double deltaTime = 0;
-
     int quit = 0;
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -51,11 +48,41 @@ int main(int argc, char **argv)
     }
 
     Entity player; player.x = 1; player.y = 1;
-    player.image = IMG_LoadTexture(renderer, "./assets/sprites/MyChar.png");
-    
+    player.sprite = (void *) IMG_LoadTexture(renderer, "./assets/sprites/MyChar.png");
+
+    Uint32 prevTime = 0;
     while(!quit) { // SDL loop
-        quit = Citrus_EventHandler(window, &player);
-        Citrus_Renderer(renderer, &player);
+
+        // Calculate Delta Time
+        Uint32 currTime = SDL_GetTicks();
+        Uint32 deltaTime = currTime - prevTime;
+        prevTime = currTime;
+
+        printf("deltatime: %lu\r", deltaTime);
+
+        SDL_Event event;
+        while(SDL_PollEvent( &event ) != 0) {
+            if( event.type == SDL_QUIT ) {
+                return 1;
+            }
+            const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
+
+            player.y -= keyStates[KEY_MAP[ACTION_UP]]*1;
+            player.y += keyStates[KEY_MAP[ACTION_DOWN]]*1;
+            player.x -= keyStates[KEY_MAP[ACTION_LEFT]]*1;
+            player.x += keyStates[KEY_MAP[ACTION_RIGHT]]*1;
+        }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+        SDL_Rect rect = {player.x, player.y, 64, 64};
+        SDL_RenderCopy(renderer, (SDL_Texture *) player.sprite, NULL, &rect);
+
+        SDL_RenderPresent(renderer);
+
     }
 
     
@@ -63,82 +90,4 @@ int main(int argc, char **argv)
     SDL_Quit();
 
     return 0;
-}
-
-/* Return 1 on window quit */
-int Citrus_EventHandler(SDL_Window *window, Entity *player){
-    // event handler
-    SDL_Event event;
-
-    
-    while(SDL_PollEvent( &event ) != 0) {
-        if( event.type == SDL_QUIT ) {
-            return 1;
-        }
-        const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
-
-        player->y -= keyStates[KEY_MAP[ACTION_UP]]*1;
-        player->y += keyStates[KEY_MAP[ACTION_DOWN]]*1;
-        player->x -= keyStates[KEY_MAP[ACTION_LEFT]]*1;
-        player->x += keyStates[KEY_MAP[ACTION_RIGHT]]*1;
-
-        // if(keyStates[KeyMap[ACTION_UP]]){
-        //     printf("UP\n");
-        //     if(keyStates[KeyMap[ACTION_LEFT]]){
-
-        //     }
-        //     else if(keyStates[KeyMap[ACTION_RIGHT]])
-        // }
-        // else if(keyStates[KeyMap[ACTION_DOWN]]){
-        //     printf("DOWN\n");
-        // }
-
-
-        // else if(event.type = SDL_KEYDOWN){
-        //     if(event.key.keysym.sym==KeyMap[ACTION_UP]){
-        //         printf("up\n");
-        //         player->y -= 1;
-        //     }
-        //     else if(event.key.keysym.sym==KeyMap[ACTION_DOWN]){
-        //         printf("down\n");
-        //         player->y += 1;
-        //     }
-        //     else if(event.key.keysym.sym==KeyMap[ACTION_LEFT]){
-        //         printf("left\n");
-        //         player->x -= 1;
-        //     }
-        //     else if(event.key.keysym.sym==KeyMap[ACTION_RIGHT]){
-        //         printf("right\n");
-        //         player->x += 1;
-        //     }
-
-
-        //     /* switch (event.key.keysym.sym)
-        //     {
-        //     case KeyMap[ACTION_UP]:
-        //         printf("up\n");
-        //         break;
-            
-        //     default:
-        //         break;
-        //     } */
-        // }
-    }
-    // end
-
-    return 0;
-
-}
-
-void Citrus_Renderer(SDL_Renderer *renderer, Entity *player){
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    SDL_RenderClear(renderer);
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-    SDL_Rect rect = {player->x, player->y, 64, 64};
-    SDL_RenderCopy(renderer, player->image, NULL, &rect);
-
-
-    SDL_RenderPresent(renderer);
 }
