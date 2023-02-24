@@ -1,21 +1,17 @@
 #include <stdio.h>
-#include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <math.h>
 #include <io.h>
 
-/* Engine Files */
+/* Core Files */
 #include "citrus_core/core.h"
 #include "citrus_core/input.h"
 #include "citrus_core/entity.h"
 
-/* SDL2 & OpenGL */
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#include "glad/glad.h"
-
 /* utils */
 #include "citrus_utils/linear.h"
+
 
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
@@ -50,7 +46,8 @@ int main(int argc, char **argv)
     }
 
     int x = 0, y = 0;
-    Vector *ve = initVector(2);
+    Vector *ve = create_vector(2, 0.0, 0.0);
+    Vector *origin = create_vector(2, (SCREEN_W/2.f), (SCREEN_H/2.f));
 
     Uint32 prevTime = 0;
     while(!quit) { // SDL loop
@@ -60,6 +57,7 @@ int main(int argc, char **argv)
         Uint32 deltaTime = currTime - prevTime;
         prevTime = currTime;
 
+        Uint64 fps = deltaTime == 0 ? 1000 : 1000/deltaTime;
         SDL_Event event;
         while(SDL_PollEvent( &event ) != 0) {
             if( event.type == SDL_QUIT ) {
@@ -78,22 +76,34 @@ int main(int argc, char **argv)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
         SDL_GetMouseState(&x, &y);
+        ve->s[x_] = x;
+        ve->s[y_] = y;
 
-        ve->space[x_] = x;
-        ve->space[y_] = y;
-        normalise(ve);
-        scale(ve, 200);
+        // offset pos
+        // ve->s[x_] = x-origin->s[x_];
+        // ve->s[y_] = y-origin->s[y_];
+        v_subtract(ve, origin);
 
-        int st = SDL_RenderDrawLineF(renderer, 0, 0, ve->space[x_], ve->space[y_]);
+        v_normalise(ve);
+        v_scale(ve, 100);
+        v_add(ve, origin);
 
-        printf("x: %.4d, y: %.4d\r", x, y);
+        int st = SDL_RenderDrawLineF(renderer, 
+            origin->s[x_], origin->s[y_], 
+            ve->s[x_], ve->s[y_]);
 
+        // SDL_RenderDrawLineF(renderer, 0, origin->space[y_], SCREEN_W, origin->space[y_]);
+        // SDL_RenderDrawLineF(renderer, origin->space[x_], 0, origin->space[x_], SCREEN_H);
+
+        // printf("x: %.4f, y: %.4f\r", ve->s[x_], ve->s[y_]);
+        printf("fps: %.8d\r", fps);
+        
 
         SDL_RenderPresent(renderer);
 
     }
 
-    freeVector(ve);
+    destroy_vector(ve);
     
     SDL_DestroyWindow(window);
     SDL_Quit();

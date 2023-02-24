@@ -1,5 +1,5 @@
-#ifndef _LA_MATHS_H
-#define _LA_MATHS_H
+#ifndef _LINEAR_ALGEBRA_H
+#define _LINEAR_ALGEBRA_H
 
 enum axis{
     x_,
@@ -8,8 +8,8 @@ enum axis{
 };
 
 typedef struct Vector{
-    double *space;
-    int size;
+    double *s;
+    int n;
 }Vector;
 
 typedef struct Matrix{
@@ -18,11 +18,13 @@ typedef struct Matrix{
     double **data;
 }Matrix;
 
-Vector *create_vector(int s);
+Vector *create_vector(int s, ...);
 void destroy_vector(Vector *);
 void v_scale(Vector *, int);
 void v_normalise(Vector *);
+void v_add(Vector *, Vector *);
+void v_subtract(Vector *, Vector *);
 
-
+void transform(Vector *, Matrix *);
 
 #endif
