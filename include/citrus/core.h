@@ -12,8 +12,6 @@
 #include "utils/queue.h"
 #include "utils/stack.h"
 
-int Citrus_EventHandler(SDL_Window *window, Entity *player);
-void Citrus_Renderer(SDL_Renderer *renderer, Entity *player);
 
 #endif
 

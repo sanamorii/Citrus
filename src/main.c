@@ -47,8 +47,7 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    Entity player; player.x = 1; player.y = 1;
-    player.sprite = (void *) IMG_LoadTexture(renderer, "./assets/sprites/MyChar.png");
+    int x = 0, y = 0;
 
     Uint32 prevTime = 0;
     while(!quit) { // SDL loop
@@ -58,8 +57,6 @@ int main(int argc, char **argv)
         Uint32 deltaTime = currTime - prevTime;
         prevTime = currTime;
 
-        printf("deltatime: %lu\r", deltaTime);
-
         SDL_Event event;
         while(SDL_PollEvent( &event ) != 0) {
             if( event.type == SDL_QUIT ) {
@@ -67,19 +64,20 @@ int main(int argc, char **argv)
             }
             const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
 
-            player.y -= keyStates[KEY_MAP[ACTION_UP]]*1;
-            player.y += keyStates[KEY_MAP[ACTION_DOWN]]*1;
-            player.x -= keyStates[KEY_MAP[ACTION_LEFT]]*1;
-            player.x += keyStates[KEY_MAP[ACTION_RIGHT]]*1;
+            // player.y -= keyStates[KEY_MAP[ACTION_UP]]*1;
+            // player.y += keyStates[KEY_MAP[ACTION_DOWN]]*1;
+            // player.x -= keyStates[KEY_MAP[ACTION_LEFT]]*1;
+            // player.x += keyStates[KEY_MAP[ACTION_RIGHT]]*1;
         }
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         SDL_RenderClear(renderer);
-
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-        SDL_Rect rect = {player.x, player.y, 64, 64};
-        SDL_RenderCopy(renderer, (SDL_Texture *) player.sprite, NULL, &rect);
+        SDL_GetMouseState(&x, &y);
+
+        printf("x: %.4d, y: %.4d\r", x, y);
+
 
         SDL_RenderPresent(renderer);
 
