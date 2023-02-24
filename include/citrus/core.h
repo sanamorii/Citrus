@@ -8,9 +8,6 @@
 #include "citrus/entity.h"
 
 /* data structures */
-#include "utils/linked_list.h"
-#include "utils/queue.h"
-#include "utils/stack.h"
 
 
 #endif

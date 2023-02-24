@@ -1,4 +1,4 @@
-OBJS = ./src/main.c
+OBJS = $(wildcard src/*.c)
 CC = gcc
 
 INCLUDE_PATHS = -Iinclude

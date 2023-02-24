@@ -14,6 +14,9 @@
 #include "SDL2/SDL_image.h"
 #include "glad/glad.h"
 
+/* utils */
+#include "tools/linear.h"
+
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
 
@@ -48,6 +51,7 @@ int main(int argc, char **argv)
     }
 
     int x = 0, y = 0;
+    Vector *ve = initVector(2);
 
     Uint32 prevTime = 0;
     while(!quit) { // SDL loop
@@ -75,6 +79,16 @@ int main(int argc, char **argv)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
         SDL_GetMouseState(&x, &y);
+
+        ve->space[x_] = (double) x;
+        ve->space[y_] = (double) y;
+
+        normalise(ve);
+
+
+        int st = SDL_RenderDrawLine(renderer, 0, 0, (int) ceil(ve->space[x_]), (int) ceil(ve->space[y_]));
+        
+
 
         printf("x: %.4d, y: %.4d\r", x, y);
 
