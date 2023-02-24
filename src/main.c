@@ -20,7 +20,6 @@
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
 
-
 int main(int argc, char **argv)
 {
 
@@ -80,15 +79,12 @@ int main(int argc, char **argv)
 
         SDL_GetMouseState(&x, &y);
 
-        ve->space[x_] = (double) x;
-        ve->space[y_] = (double) y;
-
+        ve->space[x_] = x;
+        ve->space[y_] = y;
         normalise(ve);
+        scale(ve, 200);
 
-
-        int st = SDL_RenderDrawLine(renderer, 0, 0, (int) ceil(ve->space[x_]), (int) ceil(ve->space[y_]));
-        
-
+        int st = SDL_RenderDrawLineF(renderer, 0, 0, ve->space[x_], ve->space[y_]);
 
         printf("x: %.4d, y: %.4d\r", x, y);
 
@@ -97,6 +93,7 @@ int main(int argc, char **argv)
 
     }
 
+    freeVector(ve);
     
     SDL_DestroyWindow(window);
     SDL_Quit();
