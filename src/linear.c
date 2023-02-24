@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "tools/linear.h"
+#include "citrus_utils/linear.h"
 
 Vector *create_vector(int s){
 
@@ -38,9 +38,7 @@ void v_normalise(Vector *ve){
         ve->space[i] /= length;
 }
 
-void transform(Vector *ve, Matrix *ma){
-    NULL;
-}
+
 
 
 Matrix *create_matrix(int m, int n){
@@ -60,3 +58,7 @@ Matrix *create_matrix(int m, int n){
     return ma;
 }
 
+/*  */
+void transform(Vector *ve, Matrix *ma){
+    NULL;
+}

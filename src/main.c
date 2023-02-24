@@ -5,9 +5,9 @@
 #include <io.h>
 
 /* Engine Files */
-#include "citrus/core.h"
-#include "citrus/input.h"
-#include "citrus/entity.h"
+#include "citrus_core/core.h"
+#include "citrus_core/input.h"
+#include "citrus_core/entity.h"
 
 /* SDL2 & OpenGL */
 #include "SDL2/SDL.h"
@@ -15,7 +15,7 @@
 #include "glad/glad.h"
 
 /* utils */
-#include "tools/linear.h"
+#include "citrus_utils/linear.h"
 
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;

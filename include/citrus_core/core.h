@@ -8,7 +8,7 @@
 #include "SDL2/SDL_image.h"
 #include "glad/glad.h"
 
-#include "citrus/entity.h"
+#include "citrus_core/entity.h"
 
 void update();
 void draw();
