@@ -11,7 +11,7 @@
 #include "citrus_core/entity.h"
 
 /* utils */
-#include "citrus_utils/linear.h"
+#include "citrus_maths/linear.h"
 
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
@@ -49,10 +49,11 @@ int main(int argc, char **argv)
     Vector *origin = create_vector(2, (SCREEN_W/2.f), (SCREEN_H/2.f));
 
     Vector *direction = create_vector(2, 0.0, 0.0);
-    Vector *position = create_vector(2, 0.0, 0.0);
+    // Vector *position = create_vector(2, 0.0, 0.0);
 
-    Entity player; player.x = 0; player.y = 0;
-    player.sprite = (void *) IMG_LoadTexture(renderer, "./assets/sprites/MyChar.png");
+    Entity *player = create_entity();
+    player->components[SPRITE] = _create_static_sprite(renderer, "./assets/sprites/MyChar.png");
+    player->components[POSITION] = _create_position();
 
     Uint32 prevTime = 0;
     while(!quit) { // SDL loop
@@ -111,11 +112,15 @@ int main(int argc, char **argv)
         printf("x: %.4f, y: %.4f\r", direction->s[x_], direction->s[y_]);
         // printf("fps: %.8d\r", fps);
 
-        v_add(position, direction);
+        PositionComponent *playerPosition = (PositionComponent *) player->components[POSITION];
+        StaticSprite *playerSprite = (StaticSprite *) player->components[SPRITE];
+
+        v_add(playerPosition, direction);
         
-        SDL_FRect rect = {position->s[x_], position->s[y_],
+        SDL_FRect rect = {playerPosition->s[x_], playerPosition->s[y_],
                           64, 64};
-        SDL_RenderCopyF(renderer, (SDL_Texture *) player.sprite, NULL, &rect);
+        SDL_RenderCopyF(renderer, 
+                        playerSprite, NULL, &rect);
 
         SDL_RenderPresent(renderer);
 

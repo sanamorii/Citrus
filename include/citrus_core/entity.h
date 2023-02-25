@@ -5,6 +5,7 @@
 #include "citrus_maths/linear.h"
 
 #define MAX_COMPONENTS 10
+#define MAX_ENTITIES 500
 
 enum EntityComponents{
     POSITION,
@@ -32,20 +33,18 @@ typedef struct Entity{
     void **components;
 }Entity;
 
-typedef Vector C_Position;
+typedef Vector PositionComponent;
 
-typedef struct C_Sprite{
-    void *sprite;
+// TODO: static sprite can be an animated sprite - just only have a 1x1 array and specify interval to 0
+typedef struct SpriteComponent{
+    int id;
     int type;
-}C_Sprite;
-
-typedef SDL_Texture StaticSprite;
-
-typedef struct AnimatedSprite{
     SDL_Texture ***sheet;  // a pointer to an array of pointers to another array of pointers
     int *frame_num;
     double interval;
-}AnimatedSprite;
+}SpriteComponent;
+
+typedef SDL_Texture StaticSprite;
 
 Entity *create_entity();
 void destroy_entity(Entity *);
@@ -53,5 +52,7 @@ void destroy_entity(Entity *);
 int create_component(Entity *, int);
 void remove_component(Entity *, int);
 
+StaticSprite *_create_static_sprite(SDL_Renderer *, char *);
+PositionComponent *_create_position();
 
 #endif
