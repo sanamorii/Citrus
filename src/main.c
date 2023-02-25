@@ -40,16 +40,19 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    if(!(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED ))){
+    if(!(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC ))){
         printf("SDL failed to create renderer: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
 
-    int x = 0, y = 0;
+    // int x = 0, y = 0;
     Vector *origin = create_vector(2, (SCREEN_W/2.f), (SCREEN_H/2.f));
 
     Vector *direction = create_vector(2, 0.0, 0.0);
     Vector *position = create_vector(2, 0.0, 0.0);
+
+    Entity player; player.x = 0; player.y = 0;
+    player.sprite = (void *) IMG_LoadTexture(renderer, "./assets/sprites/MyChar.png");
 
     Uint32 prevTime = 0;
     while(!quit) { // SDL loop
@@ -71,8 +74,8 @@ int main(int argc, char **argv)
             direction->s[y_] = ((k_states[K_MAP[A_UP]] * -1) + (k_states[K_MAP[A_DOWN]] * 1));
             direction->s[x_] = ((k_states[K_MAP[A_RIGHT]] * 1) + (k_states[K_MAP[A_LEFT]] * -1));
             v_normalise(direction);
-            v_scale(direction, 100);
-            v_add(direction, origin);
+            v_scale(direction, 5);
+            // v_add(direction, origin);
             
         }
 
@@ -80,36 +83,39 @@ int main(int argc, char **argv)
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-        SDL_GetMouseState(&x, &y);
-        position->s[x_] = x;
-        position->s[y_] = y;
+        // SDL_GetMouseState(&x, &y);
+        // position->s[x_] = x;
+        // position->s[y_] = y;
 
         // offset pos
         // position->s[x_] = x-origin->s[x_];
         // position->s[y_] = y-origin->s[y_];
 
-        v_subtract(position, origin);
-        v_normalise(position);
+        // v_subtract(position, origin);
+        // v_normalise(position);
 
-        v_scale(position, 100);
-        v_add(position, origin);
+        // v_scale(position, 100);
+        // v_add(position, origin);
 
-        
-        
 
-        int st1 = SDL_RenderDrawLineF(renderer, 
-            origin->s[x_], origin->s[y_], 
-            position->s[x_], position->s[y_]);
-        int st2 = SDL_RenderDrawLineF(renderer, 
-            origin->s[x_], origin->s[y_], 
-            direction->s[x_], direction->s[y_]);
+        // int st1 = SDL_RenderDrawLineF(renderer, 
+        //     origin->s[x_], origin->s[y_], 
+        //     position->s[x_], position->s[y_]);
+        // int st2 = SDL_RenderDrawLineF(renderer, 
+        //     origin->s[x_], origin->s[y_], 
+        //     direction->s[x_], direction->s[y_]);
 
-        // SDL_RenderDrawLineF(renderer, 0, origin->space[y_], SCREEN_W, origin->space[y_]);
-        // SDL_RenderDrawLineF(renderer, origin->space[x_], 0, origin->space[x_], SCREEN_H);
+        SDL_RenderDrawLineF(renderer, 0, origin->s[y_], SCREEN_W, origin->s[y_]);
+        SDL_RenderDrawLineF(renderer, origin->s[x_], 0, origin->s[x_], SCREEN_H);
 
         printf("x: %.4f, y: %.4f\r", direction->s[x_], direction->s[y_]);
         // printf("fps: %.8d\r", fps);
+
+        v_add(position, direction);
         
+        SDL_FRect rect = {position->s[x_], position->s[y_],
+                          64, 64};
+        SDL_RenderCopyF(renderer, (SDL_Texture *) player.sprite, NULL, &rect);
 
         SDL_RenderPresent(renderer);
 

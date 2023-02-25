@@ -11,7 +11,6 @@ enum EntityTypes{
 typedef struct Entity{
     long int id;
     int x, y;
-    int type;
 
     void *sprite;
 
