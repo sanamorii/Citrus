@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <math.h>
 
-#include "citrus_utils/linear.h"
+#include "citrus_maths/linear.h"
 
 Vector *create_vector(int s, ...){
 

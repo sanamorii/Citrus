@@ -2,13 +2,16 @@
 #define CITRUSENTITY_H
 
 #include "citrus_core/core.h"
-#include "citrus_utils/linear.h"
+#include "citrus_maths/linear.h"
+
+#define MAX_COMPONENTS 10
 
 enum EntityComponents{
     POSITION,
-    PHYSICS,
     SPRITE,
-    AUDIO
+    PHYSICS,
+    
+    AUDIO,
 };
 
 enum SpriteType{
@@ -26,13 +29,7 @@ enum SpriteSheetIndex{
 
 typedef struct Entity{
     long int id;
-    int x, y;
-
-    void *sprite;
-
     void **components;
-    int component_num;
-
 }Entity;
 
 typedef Vector C_Position;
@@ -42,9 +39,7 @@ typedef struct C_Sprite{
     int type;
 }C_Sprite;
 
-typedef struct StaticSprite{
-    SDL_Texture *texture;
-}StaticSprite;
+typedef SDL_Texture StaticSprite;
 
 typedef struct AnimatedSprite{
     SDL_Texture ***sheet;  // a pointer to an array of pointers to another array of pointers
@@ -53,10 +48,10 @@ typedef struct AnimatedSprite{
 }AnimatedSprite;
 
 Entity *create_entity();
-void destroy_entity();
+void destroy_entity(Entity *);
 
-int create_component(Entity *);
-void remove_component(Entity *, int component_type);
+int create_component(Entity *, int);
+void remove_component(Entity *, int);
 
 
 #endif

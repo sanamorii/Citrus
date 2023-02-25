@@ -7,3 +7,5 @@ Game engine written in C, SDL2, & OpenGL
 - [ ] Audio
 - [ ] Entities
 - [ ] Physics
+
+- Compatibility w/ Linux (& MacOS?)
