@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <io.h>
+#include <windows.h>
 
 /* Core Files */
 #include "citrus_core/core.h"
