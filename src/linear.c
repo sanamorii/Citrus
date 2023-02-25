@@ -39,20 +39,47 @@ void v_normalise(Vector *ve){
     for (int i = 0; i < ve->n; i++)
         length += (ve->s[i] * ve->s[i]);
     length = sqrt(length);
-    length = length==0 ? 1 : length;
+    // length = length==0 ? 1 : length;
     for(int i = 0; i < ve->n; i++)
-        ve->s[i] /= length;
+        if(length == 0){
+            ve->s[i] = 0;
+        }
+        else{
+            ve->s[i] /= length;
+        }
 }
 
 void v_add(Vector *v1, Vector *v2){
-    v1->s[x_] += v2->s[x_];
-    v1->s[y_] += v2->s[y_];
+    if(v1->n != v2->n){
+        fprintf(stderr, "fatal: addition of invalid sized vectors (v1->n: %f, v2->n: %f)\n", v1->n, v2->n);
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i<v1->n; i++){ 
+        v1->s[i] += v2->s[i]; }
 }
 
 void v_subtract(Vector *v1, Vector *v2){
-    v1->s[x_] -= v2->s[x_];
-    v1->s[y_] -= v2->s[y_];
+    if(v1->n != v2->n){
+        fprintf(stderr, "fatal: subtraction of invalid sized vectors (v1->n: %f, v2->n: %f)\n", v1->n, v2->n);
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i<v1->n; i++){ 
+        v1->s[i] -= v2->s[i]; }
 }
+
+
+int is_zero(Vector *v){
+    int flag = 0;
+    for(int i = 0; i<v->n; i++){
+        if (v->s[i] != 0.0)
+            flag++;
+    }
+
+    return flag ? 0 : 1;
+}
+
 
 Matrix *create_matrix(int m, int n){
     Matrix *ma = (Matrix *) malloc(sizeof(Matrix));

@@ -6,13 +6,16 @@
 
 /* Keybindings */
 enum BINDING_INDEX{
-    ACTION_UP,
-    ACTION_DOWN,
-    ACTION_LEFT,
-    ACTION_RIGHT
+    A_UP,
+    A_DOWN,
+    A_LEFT,
+    A_RIGHT,
+    A_INTERACT,
+    A_CRTL,
+    A_SHFT
 };
 
-int KEY_MAP[4] = {
+int K_MAP[4] = {
     SDL_SCANCODE_W,
     SDL_SCANCODE_S,
     SDL_SCANCODE_A,
