@@ -1,6 +1,5 @@
+.idea/
 .vscode/
-reference/
-testing/
-citrus_engine.code-workspace
-bin/releases/*
-bin/debug/*
+.vs/
+bin/
+note.txt
